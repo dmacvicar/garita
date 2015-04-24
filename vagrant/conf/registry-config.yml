@@ -1,0 +1,20 @@
+version: 0.1
+loglevel: debug
+storage:
+  filesystem:
+    rootdirectory: /var/lib/docker-registry
+http:
+  addr: 0.0.0.0:80
+auth:
+  token:
+    realm: http://garita.test.lan/v2/token
+    service: registry.test.lan
+    issuer: garita.test.lan
+    rootcertbundle: /vagrant/vagrant/conf/ca_bundle/server.crt
+notifications:
+  endpoints:
+    - name: garita
+      url: http://garita.test.lan/v2/webhooks/events
+      timeout: 500ms
+      threshold: 5
+      backoff: 1s
