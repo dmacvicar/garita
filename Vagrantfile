@@ -8,6 +8,18 @@ DOMAIN = 'test.lan'
 # Create and configure the Docker container(s)
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
+  config.vm.define 'garita' do |container|
+    container.vm.provider 'docker' do |d|
+      d.image           = 'opensuse:13.2'
+      d.volumes         = [File.join(ENV['GOPATH'], 'bin/garita') +
+       ':/usr/local/bin/garita']
+      d.cmd             = ['/usr/local/bin/garita']
+      d.name            = 'garita'
+      d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
+      d.expose          = [80]
+    end
+  end
+
   config.vm.define 'registry' do |container|
     container.vm.provider 'docker' do |d|
       d.build_dir       = './docker/images/registry'
@@ -16,17 +28,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         [File.expand_path('vagrant/conf/registry-config.yml') +
           ':/etc/registry-config.yml']
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
-    end
-  end
-
-  config.vm.define 'garita' do |container|
-    container.vm.provider 'docker' do |d|
-      d.image           = 'opensuse/13.2'
-      d.volumes         = [File.join(ENV['GOPATH'], 'bin/garita') +
-       ':/usr/local/bin/garita']
-      d.cmd             = ['/usr/local/bin/garita']
-      d.name            = 'garita'
-      d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
+      d.link 'garita:garita.test.lan'
+      d.expose          = [80]
     end
   end
 
@@ -37,8 +40,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.name            = 'dockerd'
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
       d.ports           = ['23750:2375']
-      d.link            = ['registry:registry.test.lan']
+      d.link 'registry:registry.test.lan'
     end
   end
-  
+
 end
