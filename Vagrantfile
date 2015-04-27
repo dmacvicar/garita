@@ -40,6 +40,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
       d.ports           = ['23750:2375']
       d.link 'registry:registry.test.lan'
+      d.link 'garita:garita.test.lan'
     end
   end
 
