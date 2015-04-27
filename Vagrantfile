@@ -11,9 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define 'garita' do |container|
     container.vm.provider 'docker' do |d|
       d.image           = 'opensuse:13.2'
-      d.volumes         = [File.join(ENV['GOPATH'], 'bin/garita') +
-       ':/usr/local/bin/garita']
-      d.cmd             = ['/usr/local/bin/garita']
+      d.volumes         = [File.join(Dir.pwd, 'garita') + ':/usr/bin/garita']
+      d.cmd             = ['/usr/bin/garita']
       d.name            = 'garita'
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
       d.expose          = [80]
