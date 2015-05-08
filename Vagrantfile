@@ -12,7 +12,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     container.vm.provider 'docker' do |d|
       d.image           = 'opensuse:13.2'
       d.volumes         = [File.join(Dir.pwd, 'garita') + ':/usr/bin/garita']
-      d.cmd             = ['/usr/bin/garita']
+      d.cmd             = ['/usr/bin/garita',
+                           '-htpasswd', '/vagrant/vagrant/conf/htpasswd',
+                           '-key', '/vagrant/vagrant/conf/ca_bundle/server.key']
       d.name            = 'garita'
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
       d.expose          = [80]
