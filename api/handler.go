@@ -23,6 +23,7 @@ import (
 	"github.com/gorilla/handlers"
 	auth "github.com/abbot/go-http-auth"
 	token "github.com/dmacvicar/garita/token"
+	utils "github.com/dmacvicar/garita/utils"
 )
 
 type TokenResponse struct {
@@ -40,6 +41,7 @@ func createAuthTokenFunc(keyPath string) func (w http.ResponseWriter, r *auth.Au
 		scope, _ := token.ParseScope(r.URL.Query().Get("scope"))
 
 		token, err := token.NewJwtToken(r.Username, service, scope, keyPath)
+		log.Println(utils.PrettyPrint(token.Claim()))
 
 		if err != nil {
 			log.Println("error:", err)
