@@ -83,7 +83,7 @@ docker -H tcp://localhost:23750 push registry.test.lan/duncan/busybox
 
 # Bugs
 
-The [https://docs.docker.com/registry/spec/auth/token/ specification] does not go into every detail. If I missed something please open an issue.
+The [specification](https://docs.docker.com/registry/spec/auth/token/) does not go into every detail. If I missed something please open an issue.
 
 # Authors
 
