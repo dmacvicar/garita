@@ -85,7 +85,14 @@ func (t *JwtToken) singleAction() accessItem {
 	action := accessItem{}
 	action.Type = t.Scope.Type
 	action.Name = t.Scope.Name
-	action.Actions = t.Scope.Actions
+
+	// only allow push pull if scope namespace
+	// is the same as the authenticated account
+	if (t.Account == t.Scope.Namespace) {
+		action.Actions = t.Scope.Actions
+	} else {
+		action.Actions = []string{}
+	}
 	return action
 }
 
