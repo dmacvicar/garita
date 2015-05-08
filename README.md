@@ -3,8 +3,8 @@
 
 Small Docker v2 registry auth server in Go.
 
-It exists mostly as a project to learn Go and understand the protocol
-[Portus](https://github.com/SUSE/Portus) implements.
+It exists mostly as a project to learn Go, the Vagrant Docker provider, and
+to understand the protocol [Portus](https://github.com/SUSE/Portus) implements.
 
 ## Features
 
