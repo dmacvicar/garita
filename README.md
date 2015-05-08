@@ -4,7 +4,7 @@
 Small Docker v2 registry auth server in Go.
 
 It exists mostly as a project to learn Go and understand the protocol
-[https://github.com/SUSE/Portus Portus] implements.
+[Portus](https://github.com/SUSE/Portus) implements.
 
 ## Features
 
@@ -12,7 +12,7 @@ It exists mostly as a project to learn Go and understand the protocol
 * Once authenticated, it provides push and pull access to the
   /$user namespace
 
-Garita is inspired in [https://github.com/SUSE/Portus Portus], which
+Garita is inspired in [Portus](https://github.com/SUSE/Portus), which
 is a full featured auth server and registry index.
 
 ## Running
