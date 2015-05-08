@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/dmacvicar/garita.svg?branch=master)](https://travis-ci.org/dmacvicar/garita)
+
 # Garita
 
 Small Docker v2 registry auth server in Go.
