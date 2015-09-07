@@ -5,4 +5,4 @@ RUN zypper --non-interactive ar -f http://download.opensuse.org/repositories/Vir
 RUN zypper --gpg-auto-import-keys --non-interactive in --no-recommends \
    docker curl
 EXPOSE 2375
-CMD ["/usr/bin/docker", "-d", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "registry.test.lan"]
+CMD ["/usr/bin/docker", "daemon", "-H", "tcp://0.0.0.0:2375", "--insecure-registry", "registry.test.lan", "-s", "overlay"]

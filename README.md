@@ -42,6 +42,11 @@ The environment creates 3 containers:
 * a Registry (registry, registry.test.lan)
 * garita (garita, garita.test.lan)
 
+While the images are based on opensuse:13.2, the dockerd container requires a host kernel
+with overlayfs support. (eg. openSUSE Tumbleweed or another distribution supporting
+overlayfs). The dockerd container is already privileged but I don't want to mess with the loop
+devices of the host.
+
 ## Running
 
 * Compile
