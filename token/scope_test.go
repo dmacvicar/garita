@@ -1,8 +1,8 @@
 package token
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 )
 
 func TestParse(t *testing.T) {
@@ -13,15 +13,15 @@ func TestParse(t *testing.T) {
 		t.Fail()
 	}
 
-	if (scope.Name != "duncan/busybox") {
+	if scope.Name != "duncan/busybox" {
 		t.Errorf(scope.Name)
 	}
 
-	if (scope.Type != "repository") {
+	if scope.Type != "repository" {
 		t.Errorf(scope.Type)
 	}
 
-	if (scope.Namespace != "duncan") {
+	if scope.Namespace != "duncan" {
 		t.Errorf(scope.Name)
 	}
 

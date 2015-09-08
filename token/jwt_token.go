@@ -2,24 +2,24 @@ package token
 
 import (
 	"crypto/rsa"
-	"io/ioutil"
-	"time"
-	"os"
 	libjwt "github.com/dgrijalva/jwt-go"
-	uuid "github.com/nu7hatch/gouuid"
 	utils "github.com/dmacvicar/garita/utils"
+	uuid "github.com/nu7hatch/gouuid"
+	"io/ioutil"
+	"os"
+	"time"
 )
 
 type JwtToken struct {
 	Account string
 	Service string
-	Scope *Scope
+	Scope   *Scope
 	privKey *rsa.PrivateKey
 }
 
 type accessItem struct {
-	Type string `json:"type"`
-	Name string `json:"name"`
+	Type    string   `json:"type"`
+	Name    string   `json:"name"`
 	Actions []string `json:"actions"`
 }
 
@@ -88,7 +88,7 @@ func (t *JwtToken) singleAction() accessItem {
 
 	// only allow push pull if scope namespace
 	// is the same as the authenticated account
-	if (t.Account == t.Scope.Namespace) {
+	if t.Account == t.Scope.Namespace {
 		action.Actions = t.Scope.Actions
 	} else {
 		action.Actions = []string{}
@@ -97,10 +97,10 @@ func (t *JwtToken) singleAction() accessItem {
 }
 
 func (t *JwtToken) authorizedAccess() []accessItem {
-	return []accessItem{ t.singleAction() }
+	return []accessItem{t.singleAction()}
 }
 
-func (t* JwtToken) Claim() map[string]interface{} {
+func (t *JwtToken) Claim() map[string]interface{} {
 
 	claims := make(map[string]interface{})
 
@@ -122,14 +122,14 @@ func (t* JwtToken) Claim() map[string]interface{} {
 		claims["jti"] = id
 	}
 
-	if (t.Scope != nil) {
+	if t.Scope != nil {
 		claims["access"] = t.authorizedAccess()
 	}
 
 	return claims
 }
 
-func (t* JwtToken) SignedString() (string, error) {
+func (t *JwtToken) SignedString() (string, error) {
 
 	// now create the token
 	jwt := libjwt.New(libjwt.SigningMethodRS256)
@@ -146,4 +146,3 @@ func (t* JwtToken) SignedString() (string, error) {
 	}
 	return signed, nil
 }
-

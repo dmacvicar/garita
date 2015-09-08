@@ -1,11 +1,11 @@
 package token
 
 import (
+	utils "github.com/dmacvicar/garita/utils"
+	"github.com/stretchr/testify/assert"
 	"log"
 	"strings"
 	"testing"
-	"github.com/stretchr/testify/assert"
-	utils "github.com/dmacvicar/garita/utils"
 )
 
 func TestJwtTokenProperties(t *testing.T) {
@@ -15,7 +15,7 @@ func TestJwtTokenProperties(t *testing.T) {
 
 	scope := NewScope("repository", "duncan", []string{"push", "pull"})
 
-	token, err :=NewJwtToken("duncan", "registry.test.lan", scope, keyPath)
+	token, err := NewJwtToken("duncan", "registry.test.lan", scope, keyPath)
 	assert.Nil(err)
 
 	kid, err := token.jwtKid()
@@ -33,4 +33,3 @@ func TestJwtTokenProperties(t *testing.T) {
 	tokenParts := strings.Split(signed, ".")
 	assert.Equal(3, len(tokenParts))
 }
-

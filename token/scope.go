@@ -7,10 +7,10 @@ import (
 )
 
 type Scope struct {
-	Type string
-	Name string
+	Type      string
+	Name      string
 	Namespace string
-	Actions []string
+	Actions   []string
 }
 
 func NewScope(typ string, name string, actions []string) *Scope {
@@ -20,10 +20,10 @@ func NewScope(typ string, name string, actions []string) *Scope {
 		namespace = strings.Split(name, "/")[0]
 	}
 	return &Scope{
-		Type: typ,
-		Name: name,
+		Type:      typ,
+		Name:      name,
 		Namespace: namespace,
-		Actions: actions,
+		Actions:   actions,
 	}
 }
 
@@ -36,5 +36,3 @@ func ParseScope(scopeString string) (*Scope, error) {
 
 	return NewScope(parts[0], parts[1], strings.Split(parts[2], ",")), nil
 }
-
-

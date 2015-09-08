@@ -15,28 +15,29 @@
 // package main
 //
 package api
+
 import (
 	"encoding/json"
-	"log"
-	"net/http"
-	"os"
-	"github.com/gorilla/handlers"
 	auth "github.com/abbot/go-http-auth"
 	token "github.com/dmacvicar/garita/token"
 	utils "github.com/dmacvicar/garita/utils"
+	"github.com/gorilla/handlers"
+	"log"
+	"net/http"
+	"os"
 )
 
 type TokenResponse struct {
-    Token string `json:"token"`
+	Token string `json:"token"`
 }
 
 type tokenHandler struct {
-	keyPath string
+	keyPath      string
 	htpasswdPath string
 }
 
-func createAuthTokenFunc(keyPath string) func (w http.ResponseWriter, r *auth.AuthenticatedRequest) {
-	return func (w http.ResponseWriter, r *auth.AuthenticatedRequest) {
+func createAuthTokenFunc(keyPath string) func(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
+	return func(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 		service := r.URL.Query().Get("service")
 		scope, _ := token.ParseScope(r.URL.Query().Get("scope"))
 
@@ -75,5 +76,3 @@ func NewGaritaTokenHandler(htpasswdPath string, keyPath string) http.Handler {
 	logHandler := handlers.LoggingHandler(os.Stdout, tokenHandler)
 	return logHandler
 }
-
-

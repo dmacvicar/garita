@@ -1,13 +1,13 @@
 package api
 
 import (
-	"testing"
+	"encoding/json"
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"github.com/stretchr/testify/assert"
-	"encoding/json"
 	"strings"
+	"testing"
 )
 
 const htpasswdPath = "../vagrant/conf/htpasswd"
@@ -17,10 +17,10 @@ type tokenResp struct {
 	Token string `json:"token"`
 }
 
-func TestUnauthorized (t *testing.T) {
+func TestUnauthorized(t *testing.T) {
 	assert := assert.New(t)
 
-	handler :=  NewGaritaTokenHandler(htpasswdPath, keyPath)
+	handler := NewGaritaTokenHandler(htpasswdPath, keyPath)
 	recorder := httptest.NewRecorder()
 	url := fmt.Sprintf("http://example.com/v2/token?account=duncan&service=registry.test.lan")
 	req, err := http.NewRequest("GET", url, nil)
@@ -31,10 +31,10 @@ func TestUnauthorized (t *testing.T) {
 	assert.Equal(401, recorder.Code)
 }
 
-func TestTokenOutput (t *testing.T) {
+func TestTokenOutput(t *testing.T) {
 	assert := assert.New(t)
 
-	handler :=  NewGaritaTokenHandler(htpasswdPath, keyPath)
+	handler := NewGaritaTokenHandler(htpasswdPath, keyPath)
 	recorder := httptest.NewRecorder()
 	url := fmt.Sprintf("http://example.com/v2/token?account=duncan&service=registry.test.lan")
 	req, err := http.NewRequest("GET", url, nil)
@@ -53,4 +53,3 @@ func TestTokenOutput (t *testing.T) {
 	tokenParts := strings.Split(responseJson.Token, ".")
 	assert.Equal(3, len(tokenParts))
 }
-

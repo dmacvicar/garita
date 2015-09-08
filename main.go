@@ -78,7 +78,7 @@ func main() {
 	router.Handle("/v2/token", tokenHandler)
 	log.Printf("Listening...:%d", *port)
 
-	if (*insecureHttp) {
+	if *insecureHttp {
 		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), router))
 	} else {
 		log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%d", *port), *tlsCertPath, *tlsKeyPath, router))

@@ -20,12 +20,12 @@
 package utils
 
 import (
-	"strings"
-	"encoding/base32"
 	"bytes"
 	"crypto"
 	"crypto/x509"
+	"encoding/base32"
 	"encoding/json"
+	"strings"
 )
 
 func keyIDEncode(b []byte) string {
