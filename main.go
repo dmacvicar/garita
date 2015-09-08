@@ -19,12 +19,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/gorilla/mux"
+	"log"
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
-	"log"
-	"net/http"
-	"github.com/gorilla/mux"
 
 	api "github.com/dmacvicar/garita/api"
 )
@@ -38,9 +38,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	port := flag.Int("port", 80, "port to listen to")
+	port := flag.Int("port", 443, "port to listen to")
 	htpasswdPath := flag.String("htpasswd", path.Join(pwd, "htpasswd"), "password file")
 	keyPath := flag.String("key", path.Join(pwd, "server.key"), "token secret key")
+
+	insecureHttp := flag.Bool("http", false, "use plain http")
+
+	tlsCertPath := flag.String("tlscert", path.Join(pwd, "server.crt"), "TLS certificate path")
+	tlsKeyPath := flag.String("tlskey", path.Join(pwd, "server.key"), "TLS key path")
+
 	flag.Parse()
 
 	if _, err := os.Stat(*htpasswdPath); os.IsNotExist(err) {
@@ -53,11 +59,28 @@ func main() {
 		return
 	}
 
+	// tls requires both cert and key
+	if !*insecureHttp {
+		if _, err := os.Stat(*tlsCertPath); os.IsNotExist(err) {
+			fmt.Printf("no such file or directory: %s", *tlsCertPath)
+			return
+		}
+
+		if _, err := os.Stat(*tlsKeyPath); os.IsNotExist(err) {
+			fmt.Printf("no such file or directory: %s", *tlsKeyPath)
+			return
+		}
+	}
+
 	tokenHandler := api.NewGaritaTokenHandler(*htpasswdPath, *keyPath)
 
 	router = mux.NewRouter()
 	router.Handle("/v2/token", tokenHandler)
 	log.Printf("Listening...:%d", *port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), router))
-}
 
+	if (*insecureHttp) {
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), router))
+	} else {
+		log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%d", *port), *tlsCertPath, *tlsKeyPath, router))
+	}
+}

@@ -14,7 +14,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.volumes         = [File.join(Dir.pwd, 'garita') + ':/usr/bin/garita']
       d.cmd             = ['/usr/bin/garita',
                            '-htpasswd', '/vagrant/vagrant/conf/htpasswd',
-                           '-key', '/vagrant/vagrant/conf/ca_bundle/server.key']
+                           '-key', '/vagrant/vagrant/conf/ca_bundle/server.key',
+                           '-tlscert',
+                           '/vagrant/vagrant/conf/ca_bundle/server.crt',
+                           '-tlskey',
+                           '/vagrant/vagrant/conf/ca_bundle/server.key'
+                          ]
       d.name            = 'garita'
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
       d.expose          = [80]
@@ -41,6 +46,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.name            = 'dockerd'
       d.create_args     = ['-h', d.name + ".#{DOMAIN}", '--dns-search', DOMAIN]
       d.ports           = ['23750:2375']
+      d.volumes         =
+        [File.expand_path('vagrant/conf/ca_bundle/ca.crt') +
+          ':/etc/docker/certs.d/garita.test.lan/ca.crt']
       d.link 'registry:registry.test.lan'
       d.link 'garita:garita.test.lan'
     end

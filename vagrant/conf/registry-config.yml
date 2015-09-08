@@ -7,7 +7,7 @@ http:
   addr: 0.0.0.0:80
 auth:
   token:
-    realm: http://garita.test.lan/v2/token
+    realm: https://garita.test.lan/v2/token
     service: registry.test.lan
     issuer: garita.test.lan
     rootcertbundle: /vagrant/vagrant/conf/ca_bundle/server.crt

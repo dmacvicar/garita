@@ -19,8 +19,10 @@ is a full featured auth server and registry index.
 
 ## Running
 
+Garita uses HTTPS by default. If you want to run over plain http (eg. for development purposes) you need to pass the option -http. Then you don't need to supply -tlscert and -tlskey options.
+
 ```
-garita -key path/to/server.key -htpasswd path/to/htpasswd
+garita -key path/to/server.key -htpasswd path/to/htpasswd -tlskey path/to/server.key -tlscert path/to/server.crt
 ```
 
 At the same time you need to configure the registry
@@ -28,10 +30,16 @@ At the same time you need to configure the registry
 ```
 auth:
   token:
-    realm: http://garita.yourdomain.com/v2/token
+    realm: https://garita.yourdomain.com/v2/token
     service: registry.yourdomain.com
     issuer: garita.yourdomain.com
     rootcertbundle: /path/to/server.crt
+```
+
+If you use a self signed certificate, add the CA certificate to the system trusted anchors on the docker daemon host or add the certificate to:
+
+```
+/etc/docker/certs.d/<garita host>/ca.crt
 ```
 
 ## Development Environment
