@@ -21,7 +21,7 @@ func TestJwtTokenProperties(t *testing.T) {
 	kid, err := token.jwtKid()
 	assert.Nil(err)
 
-	assert.Equal("PTWT:FNJE:7TW7:ULI7:DZQA:JJJI:RDJQ:2M76:HD6G:ZRSC:VPIF:O5BU", kid)
+	assert.Equal("NSN7:VDFR:FTW6:WBBB:7WQK:ABNJ:7CI5:M6YU:7FSD:QS45:A2BR:PAMO", kid)
 
 	log.Printf(utils.PrettyPrint(token.Claim()))
 
