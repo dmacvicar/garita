@@ -13,11 +13,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.image           = 'opensuse:13.2'
       d.volumes         = [File.join(Dir.pwd, 'garita') + ':/usr/bin/garita']
       d.cmd             = ['/usr/bin/garita',
-                           '-htpasswd', '/vagrant/vagrant/conf/htpasswd',
-                           '-key', '/vagrant/vagrant/conf/ca_bundle/server.key',
-                           '-tlscert',
+                           '--htpasswd', '/vagrant/vagrant/conf/htpasswd',
+                           '--key', '/vagrant/vagrant/conf/ca_bundle/server.key',
+                           '--tlscert',
                            '/vagrant/vagrant/conf/ca_bundle/server.crt',
-                           '-tlskey',
+                           '--tlskey',
                            '/vagrant/vagrant/conf/ca_bundle/server.key'
                           ]
       d.name            = 'garita'

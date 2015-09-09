@@ -19,11 +19,13 @@ is a full featured auth server and registry index.
 
 ## Running
 
-Garita uses HTTPS by default. If you want to run over plain http (eg. for development purposes) you need to pass the option -http. Then you don't need to supply -tlscert and -tlskey options.
+Garita uses HTTPS by default. If you want to run over plain http (eg. for development purposes) you need to pass the option -http. Then you don't need to supply --tlscert and --tlskey options.
 
 ```
-garita -key path/to/server.key -htpasswd path/to/htpasswd -tlskey path/to/server.key -tlscert path/to/server.crt
+garita --key path/to/server.key --htpasswd path/to/htpasswd --tlskey path/to/server.key --tlscert path/to/server.crt
 ```
+
+You can pass a configuration file in toml format with -c or --config. Any other configuration from the command line overrides the configuration file.
 
 At the same time you need to configure the registry
 
