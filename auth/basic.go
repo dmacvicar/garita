@@ -25,9 +25,20 @@ import (
 
 func BasicAuth(pass AuthenticatedHandlerFunc, realm string, validator Validator) http.HandlerFunc {
 
+	sendUnauthorized := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="%s"`, realm))
+		http.Error(w, "authorization failed", http.StatusUnauthorized)
+	}
+
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		auth := strings.SplitN(r.Header["Authorization"][0], " ", 2)
+		if len(r.Header["Authorization"]) < 1 {
+			sendUnauthorized(w, r)
+			return
+		}
+
+		authHeader := r.Header["Authorization"][0]
+		auth := strings.SplitN(authHeader, " ", 2)
 
 		if len(auth) != 2 || auth[0] != "Basic" {
 			http.Error(w, "bad syntax", http.StatusBadRequest)
@@ -38,8 +49,7 @@ func BasicAuth(pass AuthenticatedHandlerFunc, realm string, validator Validator)
 		pair := strings.SplitN(string(payload), ":", 2)
 
 		if len(pair) != 2 || !validator(pair[0], pair[1]) {
-			w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="%s"`, realm))
-			http.Error(w, "authorization failed", http.StatusUnauthorized)
+			sendUnauthorized(w, r)
 			return
 		}
 
