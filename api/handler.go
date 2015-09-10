@@ -18,9 +18,9 @@ package api
 
 import (
 	"encoding/json"
-	auth "github.com/abbot/go-http-auth"
-	token "github.com/dmacvicar/garita/token"
-	utils "github.com/dmacvicar/garita/utils"
+	"github.com/dmacvicar/garita/auth"
+	"github.com/dmacvicar/garita/token"
+	"github.com/dmacvicar/garita/utils"
 	"github.com/gorilla/handlers"
 	"log"
 	"net/http"
@@ -70,9 +70,8 @@ func createAuthTokenFunc(keyPath string) func(w http.ResponseWriter, r *auth.Aut
 }
 
 func NewGaritaTokenHandler(htpasswdPath string, keyPath string) http.Handler {
-	secrets := auth.HtpasswdFileProvider(htpasswdPath)
-	authenticator := auth.NewBasicAuthenticator("example.com", secrets)
-	tokenHandler := authenticator.Wrap(createAuthTokenFunc(keyPath))
-	logHandler := handlers.LoggingHandler(os.Stdout, tokenHandler)
+	validator := auth.NewHtpasswdValidator(htpasswdPath)
+	tokenHandler := auth.BasicAuth(createAuthTokenFunc(keyPath), "realm", validator)
+	logHandler := handlers.LoggingHandler(os.Stdout, auth.GetOnly(tokenHandler))
 	return logHandler
 }
