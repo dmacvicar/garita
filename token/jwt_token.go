@@ -100,9 +100,9 @@ func (t *JwtToken) authorizedAccess() []accessItem {
 	return []accessItem{t.singleAction()}
 }
 
-func (t *JwtToken) Claim() map[string]interface{} {
+func (t *JwtToken) Claim() libjwt.Claims {
 
-	claims := make(map[string]interface{})
+	claims := make(libjwt.MapClaims)
 
 	fqdn, err := os.Hostname()
 	if err != nil {

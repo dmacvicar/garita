@@ -1,6 +1,7 @@
 package token
 
 import (
+	libjwt "github.com/dgrijalva/jwt-go"
 	utils "github.com/dmacvicar/garita/utils"
 	"github.com/stretchr/testify/assert"
 	"log"
@@ -23,9 +24,10 @@ func TestJwtTokenProperties(t *testing.T) {
 
 	assert.Equal("NSN7:VDFR:FTW6:WBBB:7WQK:ABNJ:7CI5:M6YU:7FSD:QS45:A2BR:PAMO", kid)
 
-	log.Printf(utils.PrettyPrint(token.Claim()))
+	claims := token.Claim().(libjwt.MapClaims)
 
-	assert.Equal("registry.test.lan", token.Claim()["aud"])
+	log.Printf(utils.PrettyPrint(claims))
+	assert.Equal("registry.test.lan", claims["aud"])
 
 	signed, err := token.SignedString()
 	assert.Nil(err)
